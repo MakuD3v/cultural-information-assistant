@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cultural Information Assistant — Can Tho</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" defer></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <!-- View: Login Screen -->
+    <div id="view-login" class="screen-view active">
+      <div class="art-banner login-hero">
+        <img src="assets/images/cantho-floating-market.jpg" alt="Can Tho Floating Market" class="hero-photo">
+        <div class="exchange-tag">SorSU × CTU Exchange</div>
+      </div>
+
+      <div class="curved-sheet login-sheet">
+        <div class="greeting-sub">Xin chào, welcome</div>
+        <h1 class="login-heading">Your Can Tho<br>program, in one place</h1>
+        <p class="login-subtext">Your schedule, interactive map, and verified cultural notes.</p>
+
+        <div class="input-block">
+          <label class="field-label" id="loginFieldLabel">Invite code</label>
+          <input type="text" id="inviteCodeInput" value="" class="text-input" placeholder="Enter invite code (e.g. SORSU-STU-01)">
+          <span class="field-hint">Your invite sets your role: student, professor or admin.</span>
+          <div id="loginError" class="login-error" style="display:none;"></div>
+        </div>
+
+        <button class="btn btn-olive" id="loginContinueBtn">Continue</button>
+
+        <div class="staff-link-wrap">
+          <a href="#" id="staffLoginLink" class="staff-link">I'm staff: sign in with my university email</a>
+        </div>
+
+        <div class="privacy-note">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span>We keep your name, email and role. Questions you type are saved anonymously.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- View: Main Tabs (Home, Plan, Ask, Map, Culture, More) -->
+    <div id="view-main" class="screen-view">
+      <!-- Tab 0: Home Dashboard — strictly non-scrollable navigation hub -->
+      <section id="tab-home" class="tab-content active">
+        <!-- Photo Hero Header -->
+        <div class="home-hero-banner">
+          <img id="homeHeroPhoto" src="assets/images/cantho-floating-market.jpg" alt="Can Tho, Vietnam" class="hero-photo">
+          <div class="home-hero-overlay">
+            <div class="user-greeting-row">
+              <div>
+                <h2 class="home-hello-title">Hello, <span id="homeUserName">—</span></h2>
+                <div class="home-cohort-pill" id="homeUserCohort"></div>
+              </div>
+              <div class="header-user-actions">
+                <button class="icon-glass-btn" onclick="loadBroadcastNotice()" title="Refresh">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                </button>
+                <div class="avatar-badge clickable" id="homeUserAvatar" onclick="switchNav(5)" title="Profile & More">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Search Pill overlapping hero bottom -->
+        <div class="home-body-zone">
+          <div class="floating-search-pill" onclick="switchNav(2)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-muted)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>Ask the guide — schedule, places, words…</span>
+            <div class="search-filter-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink)" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/></svg>
+            </div>
+          </div>
+
+          <div class="home-section-head">
+            <span>Explore program</span>
+          </div>
+
+          <!-- 2×2 Primary Navigation Tiles -->
+          <div class="home-tiles-grid">
+            <div class="home-tile-lg tile-lg-plan" onclick="switchNav(1)">
+              <div class="tile-icon-circle icon-bg-olive">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div class="tile-lg-meta">
+                <div class="tile-lg-name">Plan</div>
+                <div class="tile-lg-sub">Daily itinerary</div>
+              </div>
+            </div>
+
+            <div class="home-tile-lg tile-lg-map" onclick="switchNav(3)">
+              <div class="tile-icon-circle icon-bg-blue">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+              </div>
+              <div class="tile-lg-meta">
+                <div class="tile-lg-name">Map</div>
+                <div class="tile-lg-sub">Can Tho landmarks</div>
+              </div>
+            </div>
+
+            <div class="home-tile-lg tile-lg-culture" onclick="switchNav(4)">
+              <div class="tile-icon-circle icon-bg-clay">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </div>
+              <div class="tile-lg-meta">
+                <div class="tile-lg-name">Culture</div>
+                <div class="tile-lg-sub">Approved articles</div>
+              </div>
+            </div>
+
+            <div class="home-tile-lg tile-lg-scan" onclick="showScanWipNotice()">
+              <div class="tile-icon-circle icon-bg-muted">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+              </div>
+              <span class="tile-wip-badge">WIP</span>
+              <div class="tile-lg-meta">
+                <div class="tile-lg-name">Scan</div>
+                <div class="tile-lg-sub">Coming soon</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Can Tho Photo Strip -->
+          <div class="home-photo-strip" aria-label="Can Tho highlights">
+            <img src="assets/images/cantho-floating-market.jpg" alt="Cai Rang Floating Market, Can Tho" class="strip-photo" onclick="setHomeHeroPhoto(this.src)">
+            <img src="assets/images/cantho-heritage-street.jpg" alt="Can Tho Heritage Street" class="strip-photo" onclick="setHomeHeroPhoto(this.src)">
+            <img src="assets/images/cantho-local-market.jpg" alt="Can Tho Local Market" class="strip-photo" onclick="setHomeHeroPhoto(this.src)">
+          </div>
+
+          <!-- Bottom Broadcast / Coming Soon Card -->
+          <div class="home-bottom-strip">
+            <div id="homeBroadcastBanner" style="display:none;" onclick="switchNav(1)">
+              <div class="broadcast-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              </div>
+              <div class="broadcast-copy">
+                <div class="broadcast-kicker">Coordinator Notice</div>
+                <div id="homeBroadcastText"></div>
+              </div>
+            </div>
+            <div id="homeComingSoon" style="display:none;">
+              <div class="cs-mini-title">Coming soon · Sắp ra mắt</div>
+              <div class="cs-mini-sub">Coordinator updates will appear here · Điều phối viên sẽ cập nhật tại đây</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 1: Plan -->
+      <section id="tab-plan" class="tab-content">
+        <div class="page-header-clean">
+          <div class="header-title-row">
+            <div>
+              <h2 class="screen-title-dark">Plan</h2>
+              <div class="delegation-dark" id="planCohortSubtitle"></div>
+            </div>
+            <button class="icon-circle-light" onclick="loadPlanDays(activePlanDay)" title="Refresh schedule">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            </button>
+          </div>
+          <div class="day-scroll-row" id="planDayPills"></div>
+        </div>
+
+        <div class="body-sheet-clean">
+          <div class="coordinator-alert" id="planCoordinatorAlert" style="display:none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <div id="planAlertText"></div>
+          </div>
+
+          <div class="section-title-row">
+            <h3 class="section-h3" id="planDayHeading">Day 1</h3>
+            <span class="activity-counter" id="planCountHeading">0 activities</span>
+          </div>
+
+          <div class="plan-list" id="planActivitiesList"></div>
+          <div class="offline-footer-note" id="planSyncFooter" style="display:none;"></div>
+        </div>
+      </section>
+
+      <!-- Tab 2: Ask the guide (AI) -->
+      <section id="tab-ask" class="tab-content">
+        <div class="page-header-clean ask-header-clean">
+          <div class="header-title-row">
+            <h2 class="screen-title-dark">Ask the guide</h2>
+            <button class="status-toggle-pill" id="aiStatusPill" onclick="toggleGuideOffline()">
+              <span class="status-dot"></span>
+              <span id="aiStatusText">Online</span>
+            </button>
+          </div>
+          <p class="guide-subtitle-dark">Verified answers strictly from your program itinerary and approved Can Tho articles.</p>
+        </div>
+
+        <div class="offline-banner" id="offlineAlertBanner" style="display: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path><path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+          <span id="offlineBannerText">Offline mode. Searching the saved schedule.</span>
+        </div>
+
+        <div class="quick-chips-row" id="guideQuickChips">
+          <button class="chip" onclick="submitGuideQuery('What is on today?')">Today</button>
+          <button class="chip" onclick="submitGuideQuery('What is on tomorrow?')">Tomorrow</button>
+          <button class="chip" onclick="submitGuideQuery('Now and next')">Now and next</button>
+        </div>
+
+        <div class="chat-thread" id="chatThread"></div>
+
+        <div class="chat-input-bar">
+          <input type="text" id="guideInput" placeholder="Ask about the schedule or Can Tho..." class="chat-input">
+          <button class="btn-send-round" onclick="handleSendGuide()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- Tab 3: Map -->
+      <section id="tab-map" class="tab-content">
+        <div class="map-view-wrapper" id="mapViewWrapper">
+          <div id="leafletMap"></div>
+
+          <div class="map-top-chips">
+            <button class="chip active" onclick="filterMapPoints('Today')">Today</button>
+            <button class="chip" onclick="filterMapPoints('All')">All days</button>
+            <button class="chip" onclick="filterMapPoints('Culture')">Culture sites</button>
+            <div class="map-loc-btn" onclick="loadMapLocations()" title="Refresh locations">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink)" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+            </div>
+          </div>
+
+          <div class="schematic-label">Can Tho Interactive Map</div>
+
+          <div class="map-bottom-card" id="mapBottomCard" style="display:none;">
+            <div class="pull-bar"></div>
+            <div class="map-pin-chips" id="mapPinChips"></div>
+            <div class="pin-title-row">
+              <div class="pin-circle" id="mapPinNumber">1</div>
+              <div>
+                <h3 class="pin-name" id="mapPinName">—</h3>
+                <div class="pin-sub" id="mapPinSub">—</div>
+              </div>
+            </div>
+            <div class="pin-actions">
+              <button class="btn btn-olive" id="mapDirectionsBtn">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                Details
+              </button>
+              <button class="btn btn-outline" id="mapAskBtn">Ask about this</button>
+            </div>
+          </div>
+
+          <div class="map-bottom-card" id="mapComingSoonCard" style="display:none;"></div>
+        </div>
+      </section>
+
+      <!-- Tab 4: Culture Browser -->
+      <section id="tab-culture" class="tab-content">
+        <div class="page-header-clean">
+          <div class="header-title-row">
+            <div>
+              <h2 class="screen-title-dark">Culture</h2>
+              <div class="delegation-dark">Places and traditions from approved articles.</div>
+            </div>
+            <button class="icon-circle-light" onclick="switchNav(0)" title="Home">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="body-sheet-clean">
+          <h3 class="section-h3">Browse by</h3>
+          <div class="categories-row mt-2" id="cultureCategoriesRow">
+            <div class="cat-circle-wrap" onclick="selectCultureCategory('Markets')">
+              <div class="cat-circle bg-clay"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M2 19h20"></path><path d="M3 15l4-8 5 8"></path></svg></div>
+              <span>Markets</span>
+            </div>
+            <div class="cat-circle-wrap" onclick="selectCultureCategory('Heritage')">
+              <div class="cat-circle bg-delta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div>
+              <span>Heritage</span>
+            </div>
+            <div class="cat-circle-wrap" onclick="selectCultureCategory('Music')">
+              <div class="cat-circle bg-mustard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></div>
+              <span>Music</span>
+            </div>
+            <div class="cat-circle-wrap" onclick="selectCultureCategory('Food')">
+              <div class="cat-circle bg-olive"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path></svg></div>
+              <span>Food</span>
+            </div>
+            <div class="cat-circle-wrap" onclick="selectCultureCategory('Words')">
+              <div class="cat-circle bg-ink"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+              <span>Words</span>
+            </div>
+          </div>
+
+          <div class="section-title-row mt-4">
+            <h3 class="section-h3" id="placesSectionTitle">Articles &amp; Places</h3>
+            <span class="activity-counter" id="cultureCount">0 articles</span>
+          </div>
+
+          <div class="places-grid mt-2" id="placesGrid"></div>
+
+          <div class="word-card mt-4" id="wordToLearnCard" style="display:none;">
+            <div>
+              <div class="word-label">Word to learn</div>
+              <div class="word-viet" id="wordVietText">—</div>
+              <div class="word-trans" id="wordTransText">—</div>
+            </div>
+            <button class="icon-circle-light bg-white" onclick="copyLearnedWord()" title="Copy">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink)" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 5: More / Profile -->
+      <section id="tab-more" class="tab-content">
+        <div class="page-header-clean">
+          <div class="profile-row">
+            <div class="avatar-lg" id="moreUserAvatar">—</div>
+            <div>
+              <h2 class="profile-name-dark" id="moreUserName">—</h2>
+              <div class="profile-tags">
+                <span class="role-pill-dark" id="moreUserRole">—</span>
+                <span class="cohort-text-dark" id="moreUserCohort">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="body-sheet-clean">
+          <h3 class="section-h3 mb-3">What the guide knows</h3>
+
+          <div class="know-card clickable" onclick="switchNav(1)">
+            <div class="know-icon icon-olive">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            </div>
+            <div class="flex-1">
+              <div class="know-title">Program itinerary</div>
+              <div class="know-desc" id="itineraryStatusLabel">—</div>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-muted)" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </div>
+
+          <div class="know-card clickable" onclick="switchNav(4)">
+            <div class="know-icon icon-sage">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-olive)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            </div>
+            <div class="flex-1">
+              <div class="know-title" id="approvedArticlesCountTitle">0 approved articles</div>
+              <div class="know-desc" id="approvedArticlesSourcesDesc">Coming soon · Sắp ra mắt</div>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-muted)" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </div>
+
+          <div class="settings-card mt-4">
+            <div class="setting-row">
+              <div>
+                <div class="setting-title">Show how I answered</div>
+                <div class="setting-sub">Steps under every answer</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleSteps" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <hr class="divider">
+
+            <div class="setting-row">
+              <div>
+                <div class="setting-title">Keep schedule offline</div>
+                <div class="setting-sub" id="offlineSettingSub">—</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleOffline" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <hr class="divider">
+
+            <div class="setting-row">
+              <div class="setting-title">Text size</div>
+              <div class="text-size-pills">
+                <button class="ts-btn active" id="tsNormalBtn" onclick="setTextSize(false)">A</button>
+                <button class="ts-btn" id="tsLargeBtn" onclick="setTextSize(true)" style="font-size:17px;">A</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="link-card mt-3" onclick="switchNav(2)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-muted)" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+            <span class="flex-1">Ask coordinator / Report issue</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-muted)" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </div>
+
+          <div class="privacy-box mt-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-muted)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <div>
+              <strong>Privacy</strong>
+              <p>We keep your name, email and role. Questions you type are saved without your name.</p>
+            </div>
+          </div>
+
+          <button class="btn btn-outline btn-signout mt-4" onclick="handleSignOut()">Sign out</button>
+        </div>
+      </section>
+
+    <!-- Bottom Nav Bar -->
+      <nav class="mobile-nav-bar">
+        <button class="nav-item active" onclick="switchNav(0)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span>Home</span>
+        </button>
+
+        <button class="nav-item" onclick="switchNav(1)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <span>Plan</span>
+        </button>
+
+        <button class="nav-ask-circle" onclick="switchNav(2)" title="Ask the Guide">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        </button>
+
+        <button class="nav-item" onclick="switchNav(3)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+          <span>Map</span>
+        </button>
+
+        <button class="nav-item" onclick="switchNav(4)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <span>Culture</span>
+        </button>
+
+        <button class="nav-item" onclick="switchNav(5)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+          <span>More</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Modal: Culture Detail -->
+    <div id="modal-culture-detail" class="full-screen-modal">
+      <div class="detail-art-header">
+        <img id="detailHeroPhoto" src="assets/images/cantho-floating-market.jpg" alt="Can Tho Culture" class="hero-photo">
+        <button class="icon-circle-light btn-top-left" onclick="closeCultureDetail()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink)" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+      </div>
+
+      <div class="curved-sheet body-sheet-clean" id="detailSheetContent"></div>
+    </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

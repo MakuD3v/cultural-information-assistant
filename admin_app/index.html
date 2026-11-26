@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SorSU × CTU Coordinator Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" defer></script>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="admin-wrapper">
+    <!-- Top Green Header -->
+    <header class="admin-header">
+      <div class="header-content">
+        <div class="header-left">
+          <h1 class="header-title" id="pageMainTitle">Dashboard Overview</h1>
+          <div class="header-badges">
+            <span class="badge badge-subtle">Coordinator Console</span>
+            <span class="badge badge-draft" id="draftVersionBadge">—</span>
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="btn btn-preview" onclick="window.open('/app/', '_blank')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            Preview as student
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation tabs -->
+      <nav class="admin-nav">
+        <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
+        <button class="nav-tab" data-tab="itinerary">Itinerary</button>
+        <button class="nav-tab" data-tab="culture">Culture</button>
+        <button class="nav-tab" data-tab="locations">Map Locations</button>
+        <button class="nav-tab" data-tab="approvals">Broadcast &amp; Approvals <span class="nav-count" id="navApprovalCount">0</span></button>
+      </nav>
+    </header>
+
+    <!-- Main Content Sheet -->
+    <main class="sheet-container">
+      <!-- Approvals alert banner -->
+      <div class="alert-banner" id="approvalAlert" style="display: none;">
+        <div class="alert-text">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span id="alertMessageText"></span>
+        </div>
+        <button class="btn btn-review" onclick="switchTab('approvals')">Review</button>
+      </div>
+
+      <!-- Tab 1: Admin Dashboard Overview -->
+      <section id="tab-dashboard" class="tab-pane active">
+        <h2 class="section-title">Program Administration Overview</h2>
+        <p class="section-subtitle">Real-time PostgreSQL status for SorSU × CTU Can Tho Exchange Program.</p>
+
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card" style="cursor:pointer;" onclick="switchTab('itinerary')">
+            <div class="stat-num" id="statTotalActivities">0</div>
+            <div class="stat-label">Itinerary Activities</div>
+            <div class="stat-desc" id="statDayActivities">0 published · 0 drafts</div>
+          </div>
+          <div class="stat-card" style="cursor:pointer;" onclick="switchTab('culture')">
+            <div class="stat-num" id="statArticles">0</div>
+            <div class="stat-label">Cultural Articles</div>
+            <div class="stat-desc">Approved cultural entries</div>
+          </div>
+          <div class="stat-card" style="cursor:pointer;" onclick="switchTab('locations')">
+            <div class="stat-num" id="statLocations">0</div>
+            <div class="stat-label">Map Locations</div>
+            <div class="stat-desc">Plotted landmarks</div>
+          </div>
+          <div class="stat-card" style="cursor:pointer;" onclick="switchTab('approvals')">
+            <div class="stat-num" id="statPendingApprovals">0</div>
+            <div class="stat-label">Pending Reviews</div>
+            <div class="stat-desc">Faculty requests</div>
+          </div>
+        </div>
+
+        <div class="card mt-3" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div class="card-title" style="font-size:16px;">Registered Accounts</div>
+            <div class="card-subtitle">Students, faculty &amp; coordinators in database</div>
+          </div>
+          <div class="stat-num" id="statParticipants">0</div>
+        </div>
+
+        <div class="card mt-3">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <h3 class="card-title" style="margin-bottom:0;">Active Broadcast Notice</h3>
+            <button class="btn-primary-sm" onclick="switchTab('approvals')">Edit</button>
+          </div>
+          <p class="card-text" id="activeBroadcastText">Loading...</p>
+          <div class="card-meta" id="activeBroadcastMeta" style="font-size:12px; color:var(--color-muted); margin-top:4px;"></div>
+        </div>
+
+        <div class="card mt-3">
+          <h3 class="card-title" style="font-size:16px; margin-bottom:10px;">Quick Data Entry</h3>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <button class="btn-primary-sm" onclick="switchTab('itinerary'); openAddModal();">+ Add Activity</button>
+            <button class="btn-primary-sm" onclick="switchTab('culture'); openAddArticleModal();">+ Add Cultural Article</button>
+            <button class="btn-primary-sm" onclick="switchTab('locations'); openAddLocationModal();">+ Add Map Location</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 2: Itinerary Planner -->
+      <section id="tab-itinerary" class="tab-pane">
+        <div class="section-header">
+          <div class="day-indicator">
+            <h2 class="section-title" id="adminDayTitle">Day 1</h2>
+            <span class="activity-counter" id="activityCountLabel">0 activities</span>
+          </div>
+          <!-- Day selector pills (Day 1 to Day 7) -->
+          <div class="day-switcher" id="daySwitcher">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Activities List -->
+        <div class="activity-list" id="activityList">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Add Activity Button -->
+        <button class="btn btn-add-dashed" onclick="openAddModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Add activity for this day
+        </button>
+
+        <!-- Bottom Action Bar -->
+        <div class="action-footer">
+          <button class="btn btn-secondary" id="discardBtn" onclick="discardDraft()">Discard drafts</button>
+          <button class="btn btn-primary" id="publishBtn" onclick="publishDraft()">Publish drafts</button>
+        </div>
+      </section>
+
+      <!-- Tab 3: Culture Manager -->
+      <section id="tab-culture" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Cultural Articles</h2>
+            <p class="section-subtitle">Manage cultural articles, citation stubs &amp; vocabulary.</p>
+          </div>
+          <button class="btn btn-primary-sm" onclick="openAddArticleModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add Article
+          </button>
+        </div>
+
+        <div class="cat-filter-chips" id="cultureFilterChips">
+          <button class="chip active" onclick="filterAdminCulture('All')">All</button>
+          <button class="chip" onclick="filterAdminCulture('Markets')">Markets</button>
+          <button class="chip" onclick="filterAdminCulture('Heritage')">Heritage</button>
+          <button class="chip" onclick="filterAdminCulture('Music')">Music</button>
+          <button class="chip" onclick="filterAdminCulture('Food')">Food</button>
+          <button class="chip" onclick="filterAdminCulture('Words')">Words</button>
+        </div>
+
+        <div class="admin-cards-list mt-3" id="adminCultureList">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </section>
+
+      <!-- Tab 4: Locations & Map Points -->
+      <section id="tab-locations" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Map Locations</h2>
+            <p class="section-subtitle">Locations and landmarks displayed on the student map.</p>
+          </div>
+          <button class="btn btn-primary-sm" onclick="openAddLocationModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add Location
+          </button>
+        </div>
+
+        <div class="admin-cards-list mt-3" id="adminLocationsList">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </section>
+
+      <!-- Tab 5: Approvals & Broadcast -->
+      <section id="tab-approvals" class="tab-pane">
+        <!-- Broadcast Manager -->
+        <div class="card mb-4">
+          <h3 class="card-title">Coordinator Daily Broadcast Notice</h3>
+          <p class="card-subtitle">Pushed live to student Home and Plan screens (leave empty to show Coming Soon).</p>
+          <div class="form-group mt-2">
+            <label>Broadcast Message</label>
+            <input type="text" id="broadcastMsgInput" value="" placeholder="Enter live notice for participants..." class="form-input">
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Time Label</label>
+              <input type="text" id="broadcastTimeInput" value="" placeholder="e.g. 06:10" class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Active Program Day</label>
+              <input type="number" id="broadcastDayInput" value="1" min="1" max="20" class="form-input">
+            </div>
+          </div>
+          <div style="display:flex; gap:10px; margin-top:8px;">
+            <button class="btn btn-primary" onclick="saveBroadcastNotice()">Update Broadcast Notice</button>
+            <button class="btn btn-secondary" onclick="clearBroadcastNotice()">Clear Notice</button>
+          </div>
+        </div>
+
+        <h2 class="section-title">Faculty Change Requests</h2>
+        <p class="section-subtitle">Requests submitted by visiting professors requiring coordinator action.</p>
+        <div class="approvals-list mt-2" id="approvalsList">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal: Add / Edit Itinerary Activity -->
+    <div class="modal-overlay" id="activityModal">
+      <div class="modal-content">
+        <h3 class="modal-title" id="activityModalTitle">Add Activity to Itinerary</h3>
+        <form id="activityForm" onsubmit="submitActivityForm(event)">
+          <input type="hidden" id="editActivityId">
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Day Number</label>
+              <input type="number" id="actDay" value="1" min="1" max="20" required class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Start Time</label>
+              <input type="text" id="actStartTime" value="" placeholder="e.g. 07:30" required class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>End Time</label>
+              <input type="text" id="actEndTime" value="" placeholder="e.g. 11:30" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Activity Title</label>
+            <input type="text" id="actTitle" placeholder="Activity title" required class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label>Venue / Location Name</label>
+            <input type="text" id="actVenue" placeholder="Meeting point or venue" required class="form-input">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Target Audience</label>
+              <select id="actAudience" class="form-input">
+                <option value="Everyone">Everyone</option>
+                <option value="SorSU only">SorSU only</option>
+                <option value="Staff only">Staff only</option>
+              </select>
+            </div>
+            <div class="form-group flex-1">
+              <label>Publish Status</label>
+              <select id="actStatus" class="form-input">
+                <option value="published">Published (Live for students)</option>
+                <option value="draft">Draft (Admin preview only)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Linked Map Location (optional)</label>
+            <select id="actLocationId" class="form-input">
+              <option value="">-- None --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Description / Instructions</label>
+            <textarea id="actDescription" rows="3" placeholder="Additional details or meeting guidelines..." class="form-input"></textarea>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeActivityModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Activity</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Add / Edit Cultural Article -->
+    <div class="modal-overlay" id="cultureModal">
+      <div class="modal-content modal-lg">
+        <h3 class="modal-title" id="cultureModalTitle">Add Cultural Article</h3>
+        <form id="cultureForm" onsubmit="submitCultureForm(event)">
+          <input type="hidden" id="editCultureId">
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>Article Title</label>
+              <input type="text" id="artTitle" placeholder="Article title" required class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Category</label>
+              <select id="artCategory" class="form-input">
+                <option value="Markets">Markets</option>
+                <option value="Heritage">Heritage</option>
+                <option value="Music">Music</option>
+                <option value="Food">Food</option>
+                <option value="Words">Words</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Summary</label>
+            <textarea id="artSummary" rows="2" placeholder="Short grounded summary from approved reference..." required class="form-input"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Detailed Approved Content</label>
+            <textarea id="artContent" rows="4" placeholder="Full article content..." required class="form-input"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Fact 1</label>
+              <input type="text" id="artFact1" placeholder="Key verified fact 1..." class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Fact 2</label>
+              <input type="text" id="artFact2" placeholder="Key verified fact 2..." class="form-input">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Vietnamese Word</label>
+              <input type="text" id="artVietWord" placeholder="Vietnamese term (optional)" class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Translation</label>
+              <input type="text" id="artTranslation" placeholder="English meaning (optional)" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>Source Reference Title</label>
+              <input type="text" id="artSourceTitle" placeholder="Reference publication title" required class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Source Stub Label</label>
+              <input type="text" id="artSourceLabel" placeholder="e.g. A1 Author (2024)" required class="form-input">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Source Author</label>
+              <input type="text" id="artSourceAuthor" value="" placeholder="Author name" required class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Source Year</label>
+              <input type="text" id="artSourceDate" value="" placeholder="e.g. 2024" required class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Status</label>
+              <select id="artStatus" class="form-input">
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Linked Map Location (optional)</label>
+            <select id="artLocationId" class="form-input">
+              <option value="">-- None --</option>
+            </select>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeCultureModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Article</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Add / Edit Location -->
+    <div class="modal-overlay" id="locationModal">
+      <div class="modal-content">
+        <h3 class="modal-title" id="locationModalTitle">Add Map Location</h3>
+        <form id="locationForm" onsubmit="submitLocationForm(event)">
+          <input type="hidden" id="editLocationMode" value="">
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Location ID</label>
+              <input type="text" id="locId" placeholder="e.g. LOC-001" required class="form-input">
+            </div>
+            <div class="form-group flex-2">
+              <label>Location Name</label>
+              <input type="text" id="locName" placeholder="Landmark name" required class="form-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" id="locAddress" placeholder="Street / District / City" class="form-input">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Latitude</label>
+              <input type="number" step="0.0001" id="locLat" placeholder="10.0338" class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Longitude</label>
+              <input type="number" step="0.0001" id="locLng" placeholder="105.7876" class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Map Ref Label</label>
+              <input type="text" id="locRef" placeholder="Short pin label" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="locDesc" rows="2" placeholder="Brief description of the landmark..." class="form-input"></textarea>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeLocationModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Location</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

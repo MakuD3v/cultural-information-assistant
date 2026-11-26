@@ -1,0 +1,729 @@
+CULTURAL INFORMATION ASSISTANT
+
+Chapter 1 – Introduction
+
+Background of the Study
+
+Educational exchange programs provide students with opportunities to experience another institution, community,and culture. Participation also requires students to manage practical information, including activity schedules, venues, transportation arrangements, and details about local places. When these details are distributed across messages, documents, announcements, and websites, participants may have difficulty locating information when they need it.
+
+This concern is relevant to the SorSU–CTU exchange program in Can Tho, Viet Nam. Participants need to become familiar with their itinerary while learning about the cultural and historical significance of selected places. Aschedule may identify where an activity takes place without explaining its background; a cultural article may describe a landmark without indicating whether it is part of the program or when participants will visit it.
+
+The proposed Cultural Information Assistant will provide a centralized digital source for these needs. Itsproposed modules include schedule and itinerary access, a map, landmark and QR-code information access, cultural browsing, an automated guide, offline access to saved schedule information, and an administrative workflow for reviewing and publishing content.
+
+The application is intended for program-specific information rather than general-purpose conversation orunrestricted travel planning. Program information will be managed through an approved content workflow, and cultural information will be based on selected and reviewed references. The assistant will indicate when requested information is unavailable rather than present unsupported answers.
+
+The project will be developed with attention to usability, information accuracy, and practical access during program activities. Evaluation will use test questions and task scenarios representing participants’ information needs,examining retrieval correctness, feature selection, source identification where applicable, unavailable-information handling, andusability.
+
+Statement of the Problem
+
+General Problem
+
+Participants in the SorSU–CTU exchange program may experience difficulty accessing accurate, timely, and understandable information about schedules, activity locations, and cultural places when information is distributed across separate materials or sources. This may make it harder to confirm program details and learn about the cultural context of places they visit.
+
+The study proposes a Cultural Information Assistant that centralizes approved program information and cultural resources in a mobile-oriented application.
+
+Specific Problems
+
+Program information may be fragmented across documents and communication channels.
+
+Participants may know a landmark’s name without convenient access to reliable cultural or historical context.
+
+Users may need to search manually for a date, activity, venue, or cultural topic.
+
+Connectivity limitations may prevent access to online program information.
+
+Schedules and cultural descriptions require review and maintenance to prevent outdated or unsupported information.
+
+Participants may benefit from opening place information through a map entry or QR code.
+
+The system must be tested for correct retrieval, appropriate feature selection, and responsible handling ofunavailable information.
+
+Research Questions
+
+What information and functions do participants need to access schedules and approved cultural information conveniently?
+
+How can schedules and cultural resources be organized for retrieval through a mobile-oriented application?
+
+How can the system ground answers in approved information and handle requests for which no verified information exists?
+
+How can saved schedule information remain available offline?
+
+To what extent does the system meet its requirements and perform accurately in planned tests?
+
+Objectives of the Study
+
+General Objective
+
+To design, develop, and evaluate a Cultural Information Assistant that helps SorSU–CTU exchange participantsaccess approved schedules, activity locations, and cultural information about Can Tho through a convenient mobile-orientedapplication.
+
+Specific Objectives
+
+Identify participant information needs and administrator requirements.
+
+Organize the itinerary and approved cultural resources into structured, maintainable information.
+
+Design a mobile-oriented interface for schedule access, cultural browsing, map access, and an automated guide.
+
+Develop retrieval functions that return relevant details from approved data.
+
+Provide verified landmark or QR-code access to relevant cultural information.
+
+Provide offline access to schedule information saved to the device.
+
+Establish an administrative workflow for drafting, reviewing, and publishing content.
+
+Handle missing, conflicting, or unavailable information appropriately.
+
+Evaluate retrieval correctness, source reliability, feature selection, unavailable-information handling, and usability.
+
+Significance of the Study
+
+Exchange participants may find schedules, confirm activity details, and learn about approved cultural information without repeatedly searching separate materials. Program coordinators may maintain consistent schedules and publish reviewed updates through a centralized workflow. Cultural-information contributors can organize selected materials ina structured format. Developers and future researchers may use the project as a reference for context-specific assistants combining structured data, reviewed resources, and conversational access. The participating institutions may benefit from a single digital access point; however, the application does not replace official announcements or direct communication with program staff.
+
+Scope and Limitations
+
+Scope
+
+The system focuses on the SorSU–CTU exchange program in Can Tho. Intended users are exchange participantsand authorized administrators. Proposed functions include:
+
+Schedule and itinerary access, including dates, times, locations, and descriptions.
+
+Map access to locations associated with activities or approved points of interest.
+
+Landmark and QR-code access through verified code-to-content mappings.
+
+Browsing approved cultural articles and place information.
+
+An automated guide for questions about available schedules and approved cultural content.
+
+Offline viewing of schedule information previously saved to the device.
+
+An administrative workflow for drafting, reviewing, and publishing approved information.
+
+Limitations
+
+The project is limited to information and activities approved for the exchange program. It is not a general-purpose chatbot or unrestricted travel planner. The system cannot independently guarantee that real-world schedules, venue conditions, or external information have changed unless an authorized update is received and published. It doesnot replace official announcements, direct contact with coordinators, or emergency instructions.
+
+Offline access applies only to information saved before connectivity is lost. Features requiring a server, online model,or remote data source may not function offline. Map and QR functions depend on accurate approved records and do not replace physical signage or local guidance. The automated guide may not answer every question and must identify unavailable information rather than invent details. Evaluation results will describe performance only within the testedconditions.
+
+Definition of Terms
+
+Term
+
+Definition
+
+Cultural Information Assistant
+
+The proposed application that helps participants access approved schedules and cultural information.
+
+Exchange participant
+
+A student or authorized participant in the SorSU–CTU exchange program.
+
+Program itinerary
+
+The approved list of activities, dates, times, locations, and descriptions.
+
+Cultural information
+
+Reviewed information about selected cultural places, landmarks, traditions, or approved topics.
+
+Automated guide
+
+A system feature that interprets supported requests and retrieves information from approved sources.
+
+Approved source
+
+A document, article, or record accepted through the project’s review process.
+
+Structured data
+
+Information organized into defined fields, such as date, time, location, and description.
+
+Retrieval
+
+Locating and returning relevant information from stored data.
+
+Grounded response
+
+An answer based on retrieved approved information rather than unsupported generation.
+
+QR code
+
+A machine-readable code used to open or identify an approved information record.
+
+Offline access
+
+Viewing information stored on the device without an active remote connection.
+
+Administrator
+
+An authorized user who prepares, reviews, or publishes content.
+
+Draft content
+
+Information entered but not yet approved for publication.
+
+Published content
+
+Information that has completed review and is available to users.
+
+Functional requirement
+
+An action or service the system must provide.
+
+Non-functional requirement
+
+A quality or operating constraint, such as usability, reliability, or security.
+
+Review of Literature
+
+Digital Information Access in Tourism and Cultural Settings
+
+Digital information systems help visitors access information about destinations, cultural objects, and points of interest. Cultural heritage information may include historical descriptions, location details, and context that helpsvisitors understand places they encounter.
+
+Loretti et al. (2026) describe ARtour, a cultural-tour application combining navigation with an interactive large-language-model-based information system. Their work discusses conversational access to cultural-heritage data and examines usability, retrieval, and user experience. It also emphasizes accuracy, provenance, and governance when conversational AI presents cultural knowledge. This is relevant because the proposed assistant combines place information with an interactive guide, although this project is narrower and focused on one exchange program.
+
+Sperlí (2021) proposes a cultural-heritage framework modeling tangible and intangible cultural objects to support a tourist journey. The work describes a chatbot-based approach and an architecture for combining cultural information. It provides a reference for organizing cultural information before presenting it to users.
+
+Conversational Agents for Cultural Information
+
+Conversational agents allow users to request information in natural language rather than navigating only fixed menusor keyword searches. Casillo et al. (2020) describe CHAT-Bot, a cultural-heritage-aware chatbot intended to support tourism experiences. Their work emphasizes contextual information to respond to tourist needs. This provides background for a guide that interprets questions in the exchange-program context and selects an appropriate source.
+
+The proposed system will not treat conversational output as automatically authoritative. It will use retrievedschedule records and approved cultural information. When a request cannot be answered from available information, the system should communicate that limitation.
+
+AI-Based Retrieval and Cultural Heritage Information
+
+Conversational AI may make digital cultural information easier to explore, but its use also raises concerns about accuracy, provenance, and governance. The proposed assistant will distinguish information supported by approved records from information unavailable in its collection. It will use a constrained retrieval approach: identify the request type, retrieve relevant approved records, and use those records to formulate a response. Retrieval and response quality will be tested using answerable, incomplete, and out-of-scope questions.
+
+Mobile and QR-Based Access to Place Information
+
+Mobile applications can make information available where users need it. A map entry or QR code can provide a direct path from a physical place to its digital information. Zhang, Zhang, and Zhu (2025) review tourism technology adoption, including QR codes, mobile applications, and AI, and identify usefulness, ease of use, and trustworthiness as adoption factors. Accordingly, the proposed application should be straightforward and transparent about information reliability. QR codes will open approved records rather than act as sources of truth.
+
+Synthesis and Research Gap
+
+The literature indicates that conversational systems and mobile technologies can support access to cultural and tourism information, while emphasizing usability, information quality, source reliability, and the relationship between AI-generated responses and verified data.
+
+The proposed assistant addresses a specific use case: exchange participants need an approved itinerary and selected cultural information during a defined program. It combines program-specific schedule access, cultural browsing, map and QR access, offline saved schedules, and an administrator review-and-publish process. The project will evaluate whether this context-specific assistant retrieves appropriate information, presents it clearly, and handlesunavailable requests responsibly.
+
+Description of the Remaining Chapters
+
+Chapter 1 – Introduction presents the background, problem, objectives, significance, scope and limitations, definitions, literature review, and chapter descriptions.
+
+Chapter 2 – Methods Used discusses requirements and specifications, development and evaluation approach, algorithms, and data structures.
+
+Chapter 3 – System Design and Development describes architecture, modules, interface design, data organization, and implementation.
+
+Chapter 4 – Results and Discussion presents testing and evaluation results, including retrieval accuracy, feature behavior, unavailable-information handling, and usability.
+
+Chapter 5 – Summary, Conclusion, and Recommendations summarizes the project, draws conclusions from evaluation, and recommends improvements.
+
+Chapter 2 – Methods Used
+
+Introduction
+
+This chapter presents the methods proposed for developing and evaluating the Cultural Information Assistant. It describes requirements and specifications, major system processes, and algorithms and data structures used to manage and retrieve information.
+
+The project will use iterative development: identify user and administrator needs, define required information, design modules, implement functions, and test whether requirements are satisfied. It will be evaluated as a program-specific information assistant using approved data, not as a general-purpose conversational AI system.
+
+Development Approach
+
+The project will use an iterative, modular approach. Features will be designed, implemented, and tested separately before integration.
+
+Requirements gathering: identify participant information needs and administrator content-management needs.
+
+Information preparation: collect approved itinerary and cultural references, identify required fields, and organize content consistently.
+
+System design: define modules, roles, data flow, interfaces, and retrieval processes.
+
+Module development: implement schedule, cultural browsing, map and QR access, guide, offline schedule, and administration.
+
+Integration: connect modules so users can move among schedules, locations, cultural content, and the guide.
+
+Testing and evaluation: run functional tests and retrieval tasks, document results, and correct issues.
+
+Content review and finalization: confirm published information is approved and the final system matches its scope.
+
+Requirements and Specifications
+
+Intended Users
+
+Exchange participants will view the itinerary, access locations, browse cultural information, scan approved QR codes, ask supported questions, and view saved schedules offline. Authorized administrators will create or edit drafts,review information, approve it, and publish it. Draft or unreviewed records must not appear as approved information toparticipants.
+
+Functional Requirements
+
+ID
+
+Requirement
+
+Description
+
+FR-01
+
+View itinerary
+
+Display approved activities, dates, times, locations, and descriptions.
+
+FR-02
+
+Search/filter schedule
+
+Locate schedule records by date, activity name, or supported criteria.
+
+FR-03
+
+View activity details
+
+Display details associated with a selected itinerary record.
+
+FR-04
+
+Map information
+
+Open stored location information for activities or approved points of interest.
+
+FR-05
+
+Browse cultural content
+
+Browse approved cultural articles and place information.
+
+FR-06
+
+QR access
+
+Use a scanned or entered identifier to locate its approved record.
+
+FR-07
+
+Ask guide
+
+Accept supported natural-language questions about schedules and cultural information.
+
+FR-08
+
+Retrieve information
+
+Retrieve information from the appropriate approved source before responding.
+
+FR-09
+
+Unavailable requests
+
+Indicate when requested information is missing, unsupported, or unavailable.
+
+FR-10
+
+Offline schedule
+
+Save schedule information locally for later viewing without connectivity.
+
+FR-11
+
+Manage drafts
+
+Allow authorized administrators to create or update draft content.
+
+FR-12
+
+Review/publish
+
+Require review before content becomes available to participants.
+
+FR-13
+
+Content status
+
+Distinguish draft, reviewed, and published content.
+
+FR-14
+
+Identify sources
+
+Display source or reference information for cultural content where available.
+
+Non-Functional Requirements
+
+ID
+
+Requirement
+
+Description
+
+NFR-01
+
+Usability
+
+Use clear labels and consistent navigation.
+
+NFR-02
+
+Accuracy
+
+Base schedule details and cultural responses on approved information.
+
+NFR-03
+
+Reliability
+
+Handle missing records, invalid QR identifiers, and unavailable services safely.
+
+NFR-04
+
+Performance
+
+Complete common actions within a reasonable time under test conditions.
+
+NFR-05
+
+Offline availability
+
+Keep saved schedule information viewable without a connection.
+
+NFR-06
+
+Security
+
+Restrict administrative functions to authorized users.
+
+NFR-07
+
+Maintainability
+
+Use structured formats that can be reviewed and updated.
+
+NFR-08
+
+Source transparency
+
+Identify the origin of approved cultural information where available.
+
+NFR-09
+
+Compatibility
+
+Support the selected mobile-oriented environment and tested devices/browsers.
+
+NFR-10
+
+Scope control
+
+Keep the guide within the approved program and cultural-information scope.
+
+Qualitative phrases such as “reasonable time” should be replaced with measurable targets after the target devices and test environment are selected.
+
+Information Requirements
+
+Proposed itinerary fields: activity_id, title, date, start_time, end_time (if available), location_id, description, status,and last_updated.
+
+Proposed location fields: location_id, name, address, verified latitude and longitude (if required), map_reference (if used), and related_content_ids.
+
+Proposed cultural-content fields: content_id, title, category, summary, content, source_title, source_author, source_date, source_reference, status, and last_updated.
+
+Proposed QR mapping fields: qr_id, content_id, status, and last_verified. Only verified location coordinates,references, and QR mappings should be published. The final data dictionary should identify mandatory and optional fields.
+
+Content Review and Publication
+
+An authorized administrator creates or edits a record.
+
+The system saves the record as a draft.
+
+A reviewer checks completeness, accuracy, and source suitability.
+
+The reviewer approves the record or returns it for correction.
+
+Approved content is published and becomes available to participants.
+
+Corrections to published content follow the defined review process.
+
+The system should preserve a clear status for each record. If an audit log is included, it should record who made a change and when. The access-control specification must define review permissions and whether one person may both edit and approve content.
+
+Proposed System Architecture
+
+The system will be organized into five layers:
+
+User interface: participant screens for schedule, map, cultural browsing, QR access, and guide; administratorscreens for drafts, review, and publication.
+
+Application logic: navigation, permissions, input validation, and coordination between interface and information sources.
+
+Retrieval and guide: classifies requests, retrieves relevant records, and prepares grounded responses.
+
+Data layer: approved itinerary, location, cultural, QR, status, and administrative records.
+
+Local storage: saved schedule data for offline access, with a last-updated timestamp.
+
+High-Level Information Flow
+
+Participant  Mobile-oriented application  Schedule / Map and QR / Cultural browser / Automated guide 
+
+Approved itinerary, location, QR, and cultural data  Retrieved information  Grounded response.
+
+Administrative flow: Administrator  Create or edit draft  Review and validation  Approved and published 
+
+Available to participants. Records returned for correction remain unpublished.
+
+IT Solution and Technology Stack
+
+The following technology stack is adopted for implementation. It was selected for cross-platform mobile delivery, a single backend service to enforce grounding rules consistently, and browser-based administration without a separate build.
+
+– Participant application (frontend): Flutter, built with Dart, compiled from one codebase for Android and iOS. Handles the itinerary view, map and QR access, cultural browsing, the automated guide screen, and local caching for offline schedule viewing.
+
+– Backend and application logic: Python, exposing REST endpoints for schedule retrieval, cultural-content retrieval, QR-code resolution, and the automated guide. The retrieval and guide algorithms described above are implemented here so grounding rules are enforced in one place rather than duplicated per client.
+
+– Administrator console (frontend): JavaScript, delivered as a web application. Used by authorized administrators to draft, review, and publish content through an ordinary browser, consuming the same Python backend as the mobile application.
+
+– Data layer: A structured database accessed by the Python backend, holding itinerary, location, cultural-content, QR-mapping, and status records as defined in the Information Requirements section. The specific engine is finalized together with the data dictionary.
+
+– Local storage: Flutter's on-device storage, used to cache the most recently published schedule for offline viewing, together with a last-updated timestamp as required by NFR-05.
+
+This stack keeps all schedule and cultural retrieval logic in one Python service, so the automated guide and the mobile and web clients read from the same grounded source rather than each implementing retrieval independently.
+
+Algorithms
+
+The following algorithms describe intended logic and may be adjusted to the final programming language and framework.
+
+Schedule Retrieval Algorithm
+
+Purpose: retrieve schedule records matching a date, activity, or other supported filter.
+
+ALGORITHM RetrieveSchedule(criteria)
+
+Initialize an empty results list.
+
+Load published itinerary records.
+
+Check each record against the criteria; add matching records.
+
+Sort results by date and start time.
+
+If results are empty, return a no-match message.
+
+Otherwise, return the matching records.
+
+Only published records should appear in participant results.
+
+Cultural Information Retrieval Algorithm
+
+ALGORITHM RetrieveCulturalInformation(query, context)
+
+Normalize the query.
+
+Identify relevant keywords or concepts.
+
+Load published cultural records.
+
+Compare query with title, category, summary, content, and associated location.
+
+Rank matching records by relevance.
+
+Select records meeting the retrieval threshold.
+
+If none meet the threshold, return unavailable-information result.
+
+Otherwise, return selected records and source metadata.
+
+The implementation may use keyword matching, metadata filters, semantic search, or a combination. The chosen method should be documented and tested.
+
+Automated Guide Request-Handling Algorithm
+
+ALGORITHM HandleGuideRequest(userQuestion)
+
+Validate that the question is not empty.
+
+Classify as schedule, cultural information, location/QR, or unsupported/unclear.
+
+Route to the corresponding retrieval function.
+
+For unsupported or unclear requests, explain scope or ask for clarification.
+
+Check whether relevant information was retrieved.
+
+If none was retrieved, return an unavailable-information message.
+
+Otherwise, prepare a concise answer from retrieved records and include sources where available.
+
+Return the response.
+
+If a language model is used, it should receive retrieved records as context and must not invent missing schedule details or cultural facts. The implementation should define how conflicting records are handled.
+
+QR-Code Lookup Algorithm
+
+ALGORITHM ResolveQRCode(qrIdentifier)
+
+Validate identifier format.
+
+Search active QR mappings.
+
+If none is found, return an invalid/unavailable code message.
+
+Retrieve the linked content record.
+
+Check that the content is published.
+
+If not published, return unavailable-content message.
+
+Otherwise, display approved information.
+
+A QR code identifies a record; it does not bypass content review.
+
+Offline Schedule Access Algorithm
+
+ALGORITHM SaveScheduleForOffline(records)
+
+Validate records received from the service.
+
+Store records locally with a last-updated timestamp.
+
+Confirm the save operation.
+
+Notify the user that the schedule is available offline.
+
+ALGORITHM DisplaySchedule()
+
+Attempt to retrieve the current online schedule.
+
+If successful, display it and update the local copy when saving is enabled.
+
+Otherwise, check for a saved schedule.
+
+If one exists, display it with its last-updated timestamp.
+
+If none exists, explain that schedule information is unavailable offline.
+
+Offline access must not imply that a saved schedule is current; the interface should show its last-updated time.
+
+Content Publication Algorithm
+
+ALGORITHM PublishContent(record, reviewer)
+
+Verify reviewer permission.
+
+Validate required fields and source/reference details.
+
+If validation fails, return record for correction.
+
+Otherwise, record the review decision and set status to Published.
+
+Make the record available to participant retrieval functions.
+
+Return publication result.
+
+Data Structures
+
+List or Array
+
+A list or array stores collections such as itinerary activities returned for a date. It is useful when records must be displayed in order or processed one at a time.
+
+itinerary = [{activity_id, title, date, start_time, location_id}, ...]
+
+Record or Object
+
+Each activity, location, cultural article, and QR mapping can be represented as a record containing named fields.
+
+ActivityRecord = {activity_id, title, date, start_time, end_time, location_id, description, status, last_updated}
+
+Records make required-field validation and consistent display easier.
+
+Key-Value Map or Dictionary
+
+A dictionary maps a unique identifier to a record, allowing retrieval without scanning every record.
+
+activities_by_id = {"ACT-001": ActivityRecord, "ACT-002": ActivityRecord}
+
+Similar mappings can be used for locations, cultural records, and QR identifiers. Identifiers must be unique and references must point to existing records.
+
+Relationships Between Records
+
+An itinerary activity refers to a location through location_id.
+
+A location may refer to one or more cultural records.
+
+A QR mapping refers to a cultural record through content_id.
+
+A cultural record stores source metadata identifying its reference material.
+
+This reduces duplication: activities at the same location can refer to one location record instead of storingrepeatedaddresses.
+
+Local Storage for Offline Data
+
+The application will maintain a local copy of schedule information selected for offline access. The copy should include a timestamp or version marker. When reconnected, the application can compare it with the latest published information and update it. The final implementation should define how local data is cleared or refreshed after theprogram, particularly on shared devices.
+
+Testing and Evaluation Methods
+
+Functional Testing
+
+Test Area
+
+Example Test
+
+Schedule
+
+Search a known activity and verify date, time, and location.
+
+Schedule filtering
+
+Filter by date and verify only matching published records appear.
+
+Cultural browsing
+
+Verify an article matches its approved record.
+
+Automated guide
+
+Ask about a known activity and verify the correct itinerary record is used.
+
+Unavailable information
+
+Ask about absent information and verify the system does not invent an answer.
+
+QR lookup
+
+Use a valid identifier and verify the correct published record opens.
+
+Invalid QR
+
+Use an unknown or inactive identifier and verify an appropriate message.
+
+Offline schedule
+
+Save information, disconnect, and verify the saved schedule remains viewable.
+
+Content workflow
+
+Verify a draft is not shown to participants before publication.
+
+Publication
+
+Publish an approved record and verify it becomes available.
+
+Information Retrieval Evaluation
+
+A prepared question set should include questions about known schedule activities, approved cultural articles, activity locations, category selection, ambiguous wording, unavailable answers, and unsupported topics. For eachquestion, document the expected source record and required answer elements before testing.
+
+Evaluation Measures
+
+Retrieval correctness = (correctly retrieved test cases ÷ total retrieval test cases) × 100.
+
+Answer completeness = (required answer elements present ÷ total required answer elements) × 100.
+
+Unavailable-information handling = (unavailable cases handled correctly ÷ total unavailable cases) × 100.
+
+Functional test pass rate = (passed functional tests ÷ total functional tests) × 100.
+
+A retrieval case is correct when expected records are retrieved. An unavailable case is handled correctly when the system states it cannot provide a verified answer and does not present unsupported information as fact. Record failed tests, causes, and corrections. If participants take part in usability testing, document task instructions, feedback instrument, consent process, and analysis method.
+
+Chapter Summary
+
+This chapter presented the proposed development and evaluation methods. It identified intended users, functionaland non-functional requirements, information fields, and the content-review workflow. It described the architecture and algorithms for schedule and cultural retrieval, guide requests, QR lookup, offline access, and publication. It also identified data structures and testing measures for determining whether the application provides correct, source-grounded, useful information within its defined scope.
+
+References
+
+Casillo, M., Clarizia, F., D’Aniello, G., De Santo, M., Lombardi, M., & Santaniello, D. (2020). CHAT-Bot: A cultural heritage aware teller-bot for supporting touristic experiences. Pattern Recognition Letters, 131, 234–243.https://doi.org/10.1016/j.patrec.2020.01.003
+
+Loretti, A., Bernasconi, V., Cascarano, P., Troffei, A., Lai, M., Vitale, L., Bortolotti, A., et al. (2026). Investigating the role of conversational agents in augmented cultural heritage tours. Journal of Big Data, 13, Article 84. https://doi.org/10.1186/s40537-026-01418-4
+
+Sperlí, G. (2021). A cultural heritage framework using a deep learning based chatbot for supporting tourist journey. Expert Systems with Applications, 183, Article 115277. https://doi.org/10.1016/j.eswa.2021.115277
+
+Zhang, A., Zhang, B., & Zhu, Y. (2025). Determinants of technology adoption in tourism: Insights from a systematic literature review. SAGE Open. https://doi.org/10.1177/21582440251388798
+
+Submission note: Complete the bibliographic details for the approved Can Tho cultural references, including the “Chinh (2024)” reference, and replace implementation-neutral wording with the exact technologies and data formats selected by the team. The architecture and algorithms are a detailed proposal and should be updated if the final implementation differs.
